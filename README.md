@@ -7,3 +7,4 @@ Nexign developer test project
 4. Kafka
 5. Spring Data JPA
 6. Docker
+7. Swagger http://localhost:8080/swagger-ui/index.html

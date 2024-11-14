@@ -1,15 +1,13 @@
-package com.nefedov.nexigntestapplication.converter;
+package com.nefedov.nexigntestapplication.mapper;
 
 import com.nefedov.nexigntestapplication.dto.TaskRequestModel;
 import com.nefedov.nexigntestapplication.dto.TaskResponseModel;
 import com.nefedov.nexigntestapplication.entity.Task;
 import com.nefedov.nexigntestapplication.utils.TaskStatus;
-import org.springframework.stereotype.Service;
 
-@Service
-public class TaskConverter {
+public class TaskMapper {
 
-    public TaskResponseModel taskToResponseTask(Task task) {
+    public static TaskResponseModel taskToTaskResponse(Task task) {
         return TaskResponseModel.builder()
                 .id(task.getId())
                 .name(task.getName())
@@ -18,12 +16,12 @@ public class TaskConverter {
                 .build();
     }
 
-    public Task requestTaskToTask(TaskRequestModel taskRequestModel) {
+    public static Task taskRequestToTask(TaskRequestModel taskRequestModel) {
         return new Task(taskRequestModel.getName(), taskRequestModel.getDuration());
     }
 
-    public Task requestTaskToTask(TaskRequestModel taskRequestModel, TaskStatus status) {
-        Task task = requestTaskToTask(taskRequestModel);
+    public static Task taskRequestToTask(TaskRequestModel taskRequestModel, TaskStatus status) {
+        Task task = taskRequestToTask(taskRequestModel);
         task.setStatus(status);
         return task;
     }
