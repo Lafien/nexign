@@ -3,6 +3,8 @@ package com.nefedov.nexigntestapplication.entity;
 import com.nefedov.nexigntestapplication.utils.TaskStatus;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EntityListeners;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -26,6 +28,7 @@ public class Task {
 
     private int duration;
 
+    @Enumerated(EnumType.STRING)
     private TaskStatus status;
 
     @CreatedDate

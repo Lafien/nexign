@@ -10,7 +10,8 @@ import java.util.Arrays;
 public enum TaskStatus {
     CREATED("created"),
     IN_PROGRESS("inProgress"),
-    COMPLETED("completed");
+    COMPLETED("completed"),
+    FAILED("failed");
 
     @JsonValue
     private final String value;

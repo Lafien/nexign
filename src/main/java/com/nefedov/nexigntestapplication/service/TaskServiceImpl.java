@@ -3,6 +3,7 @@ package com.nefedov.nexigntestapplication.service;
 import com.nefedov.nexigntestapplication.dto.TaskRequestModel;
 import com.nefedov.nexigntestapplication.dto.TaskResponseModel;
 import com.nefedov.nexigntestapplication.entity.Task;
+import com.nefedov.nexigntestapplication.executor.TaskExecutorService;
 import com.nefedov.nexigntestapplication.mapper.TaskMapper;
 import com.nefedov.nexigntestapplication.repository.TaskRepository;
 import com.nefedov.nexigntestapplication.utils.TaskStatus;
@@ -17,6 +18,8 @@ public class TaskServiceImpl implements TaskService {
 
     private final TaskRepository taskRepository;
 
+    private final TaskExecutorService taskExecutorService;
+
     @Override
     public TaskStatus getTaskStatus(long id) {
         return taskRepository.findById(id).orElseThrow().getStatus();
@@ -24,8 +27,10 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public TaskResponseModel createTask(TaskRequestModel taskRequest) {
-        Task task = TaskMapper.taskRequestToTask(taskRequest, TaskStatus.CREATED);
-        return TaskMapper.taskToTaskResponse(taskRepository.save(task));
+        Task task = taskRepository.save(TaskMapper.taskRequestToTask(taskRequest, TaskStatus.CREATED));
+        TaskResponseModel taskResponseModel = TaskMapper.taskToTaskResponse(taskRepository.save(task));
+        taskExecutorService.execute(task);
+        return taskResponseModel;
     }
 
     @Override
@@ -37,5 +42,10 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public List<TaskResponseModel> getAllTasks() {
         return taskRepository.findAll().stream().map(TaskMapper::taskToTaskResponse).toList();
+    }
+
+    @Override
+    public void remove(long id) {
+        taskRepository.deleteById(id);
     }
 }

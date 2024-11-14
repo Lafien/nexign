@@ -15,4 +15,6 @@ public interface TaskService {
     TaskResponseModel getTaskById(long id);
 
     List<TaskResponseModel> getAllTasks();
+
+    void remove(long id);
 }
