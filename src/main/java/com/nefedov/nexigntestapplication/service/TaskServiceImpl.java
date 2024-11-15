@@ -10,6 +10,7 @@ import com.nefedov.nexigntestapplication.utils.TaskStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.ConcurrentModificationException;
 import java.util.List;
 
@@ -42,7 +43,11 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public List<TaskResponseModel> getAllTasks() {
-        return taskRepository.findAll().stream().map(TaskMapper::taskToTaskResponse).toList();
+        return taskRepository.findAll()
+                .stream()
+                .map(TaskMapper::taskToTaskResponse)
+                .sorted(Comparator.comparingLong(TaskResponseModel::getId))
+                .toList();
     }
 
     @Override
