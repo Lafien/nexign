@@ -29,7 +29,7 @@ POTs:
 ![image](https://github.com/user-attachments/assets/b3565999-6719-486e-a67e-3393e74caf7d)
 4. Logs example with recieved message (schedulled kafka producer with random task name and duration)
 ![image](https://github.com/user-attachments/assets/645f7a3d-77ec-4691-9a8d-378286c50d79)
-6. Error durring attemt to delete task which is is progress (lock mechanism with redisson)
+6. Error durring attemt to delete task which is in progress (lock mechanism with redisson)
    6.1 Manual task creation by REST
    ![image](https://github.com/user-attachments/assets/31ddd338-05f9-454c-92ee-fe147c2792b3)
    6.2 Delete attempt by id
