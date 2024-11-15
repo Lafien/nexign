@@ -10,6 +10,15 @@ Nexign developer test project
 7. Swagger http://localhost:8080/swagger-ui/index.html
 8. Redisson for concurrent lock mechanism
 
+How to run application:
+1. cd to project folder via PowerShell
+2. run docker-compose up
+![image](https://github.com/user-attachments/assets/dfdda99a-8446-4012-996b-d20fb527bd36)
+
+Working application logs example
+![image](https://github.com/user-attachments/assets/00a713d5-d259-46c8-8b3d-4be73cd5ae45)
+
+
 POTs:
 
 1. Containers
