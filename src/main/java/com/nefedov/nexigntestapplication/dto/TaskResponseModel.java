@@ -5,6 +5,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Builder;
 import lombok.Data;
 
+import java.time.LocalDateTime;
+
 @Builder
 @Data
 @Schema(description = "Task response model")
@@ -21,4 +23,7 @@ public class TaskResponseModel {
 
     @Schema(description = "Current task status")
     private TaskStatus status;
+
+    @Schema(description = "Task creation date and time")
+    private LocalDateTime createdDate;
 }

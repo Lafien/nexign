@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -20,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.NoSuchElementException;
 
 @RestController
 @RequestMapping("/api/task")
@@ -30,26 +30,30 @@ public class TaskController {
 
     private final TaskService taskService;
 
+    @GetMapping("/all")
+    @Operation(summary = "Get all tasks")
+    public ResponseEntity<List<TaskResponseModel>> getAllTasks() {
+        List<TaskResponseModel> tasks = taskService.getAllTasks();
+        return CollectionUtils.isNotEmpty(tasks)
+                ? new ResponseEntity<>(tasks, HttpStatus.OK)
+                : new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
     @GetMapping("/{id}/status")
     @Operation(summary = "Get task status by id")
     public ResponseEntity<TaskStatus> getTaskStatusById(@PathVariable long id) {
-        try {
-            return new ResponseEntity<>(taskService.getTaskStatus(id), HttpStatus.OK);
-        } catch (NoSuchElementException e) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
+        return new ResponseEntity<>(taskService.getTaskStatus(id), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
     @Operation(summary = "Get task by id")
     public ResponseEntity<TaskResponseModel> getTaskById(@PathVariable long id) {
-        try {
-            return new ResponseEntity<>(taskService.getTaskById(id), HttpStatus.OK);
-        } catch (NoSuchElementException e) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
+        return new ResponseEntity<>(taskService.getTaskById(id), HttpStatus.OK);
     }
 
+    /**
+     * For dev test task creation with validation
+     */
     @PostMapping
     @Operation(summary = "Register task")
     public TaskResponseModel registerTask(@RequestBody
@@ -58,12 +62,9 @@ public class TaskController {
         return taskService.createTask(taskRequest);
     }
 
-    @GetMapping("/all")
-    @Operation(summary = "Get all tasks")
-    public List<TaskResponseModel> getAllTasks() {
-        return taskService.getAllTasks();
-    }
-
+    /**
+     * For dev test redisson locker functionality
+     */
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> remove(@PathVariable long id) {
         taskService.remove(id);

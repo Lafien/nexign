@@ -26,11 +26,20 @@ services:
       - zookeeper
     environment:
       KAFKA_BROKER_ID: 1
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: PLAINTEXT://kafka:9092
     ports:
       - '9092:9092'
+    networks:
+      - app-network
+
+  redis:
+    image: redis:latest
+    ports:
+      - '6379:6379'
     networks:
       - app-network
 
@@ -42,17 +51,19 @@ services:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/workerdb
       SPRING_DATASOURCE_USERNAME: user
       SPRING_DATASOURCE_PASSWORD: secret
-      KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+      SPRING_DATA_REDIS_HOST: redis
+      SPRING_DATA_REDIS_PORT: 6379
     ports:
-      - '8080-8082:8080'
+      - '8080-8081:8080'
     networks:
       - app-network
     deploy:
-      replicas: 3
+      replicas: 2
     depends_on:
       - postgres
       - kafka
+      - redis
 
 networks:
   app-network:
-

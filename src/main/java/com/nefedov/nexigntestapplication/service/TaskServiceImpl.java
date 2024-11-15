@@ -10,6 +10,7 @@ import com.nefedov.nexigntestapplication.utils.TaskStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ConcurrentModificationException;
 import java.util.List;
 
 @Service
@@ -29,7 +30,7 @@ public class TaskServiceImpl implements TaskService {
     public TaskResponseModel createTask(TaskRequestModel taskRequest) {
         Task task = taskRepository.save(TaskMapper.taskRequestToTask(taskRequest, TaskStatus.CREATED));
         TaskResponseModel taskResponseModel = TaskMapper.taskToTaskResponse(taskRepository.save(task));
-        taskExecutorService.execute(task);
+        taskExecutorService.executeAsyncWithLock(task);
         return taskResponseModel;
     }
 
@@ -45,7 +46,8 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public void remove(long id) {
-        taskRepository.deleteById(id);
+    public void remove(long id) throws ConcurrentModificationException {
+        Task task = taskRepository.findById(id).orElseThrow();
+        taskExecutorService.executeSyncWithLock(() -> taskRepository.delete(task), id);
     }
 }

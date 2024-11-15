@@ -13,6 +13,7 @@ public class TaskMapper {
                 .name(task.getName())
                 .duration(task.getDuration())
                 .status(task.getStatus())
+                .createdDate(task.getCreateDate())
                 .build();
     }
 
