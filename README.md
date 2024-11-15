@@ -1,4 +1,4 @@
-![image](https://github.com/user-attachments/assets/e2b1bbcc-8b35-4eb0-8895-0f8564eb06a2)# nexign
+# nexign
 Nexign developer test project
 
 1. Spring Boot
