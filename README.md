@@ -21,8 +21,8 @@ Working application logs example
 
 POTs:
 
-1. Containers
-![image](https://github.com/user-attachments/assets/d01b2b94-63f2-45d5-8336-f36481291f42)
+1. Containers (2 app replicas)
+![image](https://github.com/user-attachments/assets/b8acdfe6-77b4-4ba1-9e09-273f5e4d50b2)
 2. Get all tasks
 ![image](https://github.com/user-attachments/assets/e8475f30-ac9c-4e30-9c80-553ce695b374)
 3. Get task status by id
