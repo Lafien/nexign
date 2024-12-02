@@ -1,13 +1,8 @@
 package com.nefedov.nexigntestapplication.entity;
 
 import com.nefedov.nexigntestapplication.utils.TaskStatus;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EntityListeners;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
@@ -18,6 +13,7 @@ import java.time.LocalDateTime;
 @Entity
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
 public class Task {
     @Id
@@ -33,9 +29,4 @@ public class Task {
 
     @CreatedDate
     private LocalDateTime createDate;
-
-    public Task(String name, int duration) {
-        this.name = name;
-        this.duration = duration;
-    }
 }

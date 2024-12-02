@@ -4,26 +4,16 @@ import com.nefedov.nexigntestapplication.dto.TaskRequestModel;
 import com.nefedov.nexigntestapplication.dto.TaskResponseModel;
 import com.nefedov.nexigntestapplication.entity.Task;
 import com.nefedov.nexigntestapplication.utils.TaskStatus;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
+import org.mapstruct.MappingConstants;
+import org.mapstruct.ReportingPolicy;
 
-public class TaskMapper {
+@Mapper(componentModel = MappingConstants.ComponentModel.SPRING, unmappedTargetPolicy = ReportingPolicy.IGNORE)
+public interface TaskMapper {
 
-    public static TaskResponseModel taskToTaskResponse(Task task) {
-        return TaskResponseModel.builder()
-                .id(task.getId())
-                .name(task.getName())
-                .duration(task.getDuration())
-                .status(task.getStatus())
-                .createdDate(task.getCreateDate())
-                .build();
-    }
+    TaskResponseModel taskToTaskResponse(Task task);
 
-    public static Task taskRequestToTask(TaskRequestModel taskRequestModel) {
-        return new Task(taskRequestModel.getName(), taskRequestModel.getDuration());
-    }
-
-    public static Task taskRequestToTask(TaskRequestModel taskRequestModel, TaskStatus status) {
-        Task task = taskRequestToTask(taskRequestModel);
-        task.setStatus(status);
-        return task;
-    }
+    @Mapping(source = "taskStatus", target = "status")
+    Task taskRequestToTask(TaskRequestModel taskRequestModel, TaskStatus taskStatus);
 }

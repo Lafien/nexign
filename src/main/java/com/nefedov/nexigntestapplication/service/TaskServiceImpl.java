@@ -22,6 +22,8 @@ public class TaskServiceImpl implements TaskService {
 
     private final TaskExecutorService taskExecutorService;
 
+    private final TaskMapper taskMapper;
+
     @Override
     public TaskStatus getTaskStatus(long id) {
         return taskRepository.findById(id).orElseThrow().getStatus();
@@ -29,8 +31,8 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public TaskResponseModel createTask(TaskRequestModel taskRequest) {
-        Task task = taskRepository.save(TaskMapper.taskRequestToTask(taskRequest, TaskStatus.CREATED));
-        TaskResponseModel taskResponseModel = TaskMapper.taskToTaskResponse(taskRepository.save(task));
+        Task task = taskRepository.save(taskMapper.taskRequestToTask(taskRequest, TaskStatus.CREATED));
+        TaskResponseModel taskResponseModel = taskMapper.taskToTaskResponse(taskRepository.save(task));
         taskExecutorService.executeAsyncWithLock(task);
         return taskResponseModel;
     }
@@ -38,14 +40,14 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public TaskResponseModel getTaskById(long id) {
         Task task = taskRepository.findById(id).orElseThrow();
-        return TaskMapper.taskToTaskResponse(task);
+        return taskMapper.taskToTaskResponse(task);
     }
 
     @Override
     public List<TaskResponseModel> getAllTasks() {
         return taskRepository.findAll()
                 .stream()
-                .map(TaskMapper::taskToTaskResponse)
+                .map(taskMapper::taskToTaskResponse)
                 .sorted(Comparator.comparingLong(TaskResponseModel::getId))
                 .toList();
     }

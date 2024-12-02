@@ -2,6 +2,7 @@ package com.nefedov.nexigntestapplication.dto;
 
 import com.nefedov.nexigntestapplication.utils.TaskStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 
@@ -9,6 +10,7 @@ import java.time.LocalDateTime;
 
 @Builder
 @Data
+@AllArgsConstructor
 @Schema(description = "Task response model")
 public class TaskResponseModel {
 
@@ -25,5 +27,5 @@ public class TaskResponseModel {
     private TaskStatus status;
 
     @Schema(description = "Task creation date and time")
-    private LocalDateTime createdDate;
+    private LocalDateTime createDate;
 }
